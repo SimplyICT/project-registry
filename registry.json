@@ -63,7 +63,7 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
-    }
+    },
     {
       "name": "Wazuh SOC",
       "server": "server-a",
