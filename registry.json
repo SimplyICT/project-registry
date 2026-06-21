@@ -2,6 +2,7 @@
   "projects": [
     {
       "name": "Project Hub",
+      "role": "Frontend + Backend",
       "server": "server-a",
       "path": "/home/aiagent/project-hub",
       "ssh": "aiagent@208.87.135.84",
@@ -10,6 +11,7 @@
     },
     {
       "name": "SimplyClik App",
+      "role": "Full Stack",
       "server": "server-a",
       "path": "/home/aiagent/simplyclik-app",
       "ssh": "aiagent@208.87.135.84",
@@ -18,6 +20,7 @@
     },
     {
       "name": "Mission Control Site",
+      "role": "Backend (PHP + API + Probes)",
       "server": "server-a",
       "path": "/home/aiagent/mission-control-site",
       "ssh": "aiagent@208.87.135.84",
@@ -26,6 +29,7 @@
     },
     {
       "name": "Mission Control UI",
+      "role": "Frontend (Python + HTML + SPA)",
       "server": "server-a",
       "path": "/home/aiagent/mission-control-ui",
       "ssh": "aiagent@208.87.135.84",
@@ -34,6 +38,7 @@
     },
     {
       "name": "Neodiverse",
+      "role": "Unknown",
       "server": "server-a",
       "path": "/home/aiagent/Neodiverse",
       "ssh": "aiagent@208.87.135.84",
@@ -42,6 +47,7 @@
     },
     {
       "name": "PaintCo",
+      "role": "Full Stack (ASP.NET + JS)",
       "server": "server-b",
       "path": "/home/aiagent/paintcoV2",
       "ssh": "aiagent@208.87.135.183",
@@ -50,6 +56,7 @@
     },
     {
       "name": "Agency Agents",
+      "role": "Unknown",
       "server": "server-a",
       "path": "/home/aiagent/agency-agents",
       "ssh": "aiagent@208.87.135.84",
@@ -58,6 +65,7 @@
     },
     {
       "name": "Ournd Family Site",
+      "role": "Frontend",
       "server": "server-a",
       "path": "/home/aiagent/ourndfamily-site",
       "ssh": "aiagent@208.87.135.84",
@@ -66,6 +74,7 @@
     },
     {
       "name": "Wazuh SOC",
+      "role": "Frontend (React SPA)",
       "server": "server-a",
       "path": "/home/aiagent/wazuh-soc",
       "ssh": "aiagent@208.87.135.84",
@@ -74,6 +83,7 @@
     },
     {
       "name": "Project Registry",
+      "role": "Infrastructure (Switcher + Config)",
       "server": "server-a",
       "path": "/home/aiagent/project-registry",
       "ssh": "aiagent@208.87.135.84",

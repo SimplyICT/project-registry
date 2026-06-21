@@ -45,7 +45,8 @@ with open('$REGISTRY_FILE') as f:
   data = json.load(f)
 for i, p in enumerate(data['projects'], 1):
   git_flag = 'git' if p.get('hasGit') else '--'
-  print(f'{i:2}. {p[\"name\"]:25s} [{p[\"server\"]:9s}] {git_flag}')
+  role = p.get('role', '')
+  print(f'{i:2}. {p["name"]:22s} {role:30s} [{p["server"]:9s}] {git_flag}')
 "
 }
 

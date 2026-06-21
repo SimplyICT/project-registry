@@ -37,7 +37,8 @@ function Show-Menu($projects) {
     for ($i = 0; $i -lt $projects.Count; $i++) {
         $p = $projects[$i]
         $gitFlag = if ($p.hasGit) { "git" } else { "--" }
-        Write-Host ("{0,2}. {1,-25} [{2,-9}] {3}" -f ($i+1), $p.name, $p.server, $gitFlag)
+        $role = if ($p.role) { $p.role } else { "" }
+        Write-Host ("{0,2}. {1,-22} {2,-30} [{3,-9}] {4}" -f ($i+1), $p.name, $role, $p.server, $gitFlag)
     }
     Write-Host ""
     Write-Host "  q. Quit" -ForegroundColor Yellow
