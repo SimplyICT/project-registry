@@ -71,6 +71,14 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "Project Registry",
+      "server": "server-a",
+      "path": "/home/aiagent/project-registry",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": false
     }
   ]
 }
