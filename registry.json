@@ -4,7 +4,7 @@
       "name": "Project Hub",
       "server": "server-a",
       "path": "/home/aiagent/project-hub",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
     },
@@ -12,7 +12,7 @@
       "name": "SimplyClik App",
       "server": "server-a",
       "path": "/home/aiagent/simplyclik-app",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
     },
@@ -20,7 +20,7 @@
       "name": "Mission Control Site",
       "server": "server-a",
       "path": "/home/aiagent/mission-control-site",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
     },
@@ -28,7 +28,7 @@
       "name": "Mission Control UI",
       "server": "server-a",
       "path": "/home/aiagent/mission-control-ui",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
     },
@@ -36,7 +36,7 @@
       "name": "Neodiverse",
       "server": "server-a",
       "path": "/home/aiagent/Neodiverse",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": false,
       "hasMemory": false
     },
@@ -44,7 +44,7 @@
       "name": "PaintCo",
       "server": "server-a",
       "path": "/home/aiagent/paintcoV2",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": false,
       "hasMemory": false
     },
@@ -52,7 +52,7 @@
       "name": "Agency Agents",
       "server": "server-a",
       "path": "/home/aiagent/agency-agents",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
     },
@@ -60,7 +60,7 @@
       "name": "Ournd Family Site",
       "server": "server-a",
       "path": "/home/aiagent/ourndfamily-site",
-      "ssh": "user@208.87.135.84",
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
     }
