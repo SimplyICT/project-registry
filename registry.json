@@ -64,5 +64,13 @@
       "hasGit": true,
       "hasMemory": false
     }
+    {
+      "name": "Wazuh SOC",
+      "server": "server-a",
+      "path": "/home/aiagent/wazuh-soc",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
+    }
   ]
 }

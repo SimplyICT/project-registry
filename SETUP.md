@@ -8,9 +8,9 @@
 - SSH key configured for both servers
 
 ## Clone the registry
-```powershell
+```bash
 cd ~
-git clone <your-git-remote-url> project-registry
+git clone https://github.com/SimplyICT/project-registry.git
 ```
 
 ## Run the switcher
