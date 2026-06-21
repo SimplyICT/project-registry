@@ -42,9 +42,9 @@
     },
     {
       "name": "PaintCo",
-      "server": "server-a",
+      "server": "server-b",
       "path": "/home/aiagent/paintcoV2",
-      "ssh": "aiagent@208.87.135.84",
+      "ssh": "aiagent@208.87.135.183",
       "hasGit": false,
       "hasMemory": false
     },
