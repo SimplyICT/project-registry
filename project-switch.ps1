@@ -11,6 +11,10 @@ if (-not (Get-Command "code" -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
+function Run-Git-On-Server($project, $gitArgs) {
+    ssh $($project.ssh) "cd $($project.path) && git $gitArgs" 2>$null
+}
+
 function Cleanup {
     if ($Global:Timer) {
         $Global:Timer.Stop()
@@ -18,11 +22,9 @@ function Cleanup {
     }
     if ($Global:CurrentProject -and $Global:CurrentProject.hasGit -and $Global:CurrentProject.hasMemory) {
         Write-Host "Saving memory..." -ForegroundColor Green
-        Push-Location $Global:CurrentProject.path
-        & git add ".opencode/memory.md" 2>$null
-        & git commit -m "auto-save memory $(Get-Date -Format 'yyyy-MM-dd HH:mm')" 2>$null
-        & git push 2>$null
-        Pop-Location
+        Run-Git-On-Server $Global:CurrentProject 'add .opencode/memory.md'
+        Run-Git-On-Server $Global:CurrentProject "commit -m 'auto-save memory'"
+        Run-Git-On-Server $Global:CurrentProject 'push'
         Write-Host "Memory saved." -ForegroundColor Green
     }
     & git -C $RegistryPath pull --ff-only 2>$null
@@ -49,12 +51,10 @@ function Open-Project($project) {
     Write-Host "Pulling latest registry..." -ForegroundColor Cyan
     & git -C $RegistryPath pull --ff-only 2>$null
 
-    # Pull project repo
+    # Pull project repo via SSH
     if ($project.hasGit) {
         Write-Host "Pulling latest from $($project.name)..." -ForegroundColor Green
-        Push-Location $project.path
-        & git pull --ff-only 2>$null
-        Pop-Location
+        Run-Git-On-Server $project 'pull --ff-only'
     }
 
     # Start auto-save timer
@@ -64,11 +64,7 @@ function Open-Project($project) {
         $Global:Timer.AutoReset = $true
         Register-ObjectEvent -InputObject $Global:Timer -EventName Elapsed -MessageData $project -Action {
             $proj = $Event.MessageData
-            Push-Location $proj.path
-            & git add ".opencode/memory.md" 2>$null
-            & git commit -m "auto-save memory $(Get-Date -Format 'yyyy-MM-dd HH:mm')" 2>$null
-            & git push 2>$null
-            Pop-Location
+            ssh $($proj.ssh) "cd $($proj.path) && git add .opencode/memory.md && git commit -m 'auto-save memory' && git push" 2>$null
         } | Out-Null
         $Global:Timer.Start()
     }
