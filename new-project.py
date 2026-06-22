@@ -4,7 +4,9 @@ import os
 import subprocess
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlencode
+from urllib.request import Request, urlopen, HTTPRedirectHandler, build_opener, install_opener
+from urllib.error import URLError, HTTPError
 
 PORT = 61738
 REGISTRY_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -89,6 +91,19 @@ FORM_HTML = """<!DOCTYPE html>
         <label for="hasMemory" style="margin:0;">Enable auto-save memory</label>
       </div>
 
+      <div class="checkbox-row" style="margin-top:12px;padding-top:12px;border-top:1px solid #30363d;">
+        <input type="checkbox" id="registerHub" name="registerHub" onchange="toggleHubFields()">
+        <label for="registerHub" style="margin:0;font-weight:600;">Also register in Project Hub</label>
+      </div>
+      <div id="hubFields" style="display:none;">
+        <label for="hubUrl">Hub URL</label>
+        <input type="text" id="hubUrl" name="hubUrl" value="http://208.87.135.84:3010">
+        <label for="hubUser">Hub Username</label>
+        <input type="text" id="hubUser" name="hubUser" value="admin">
+        <label for="hubPass">Hub Password</label>
+        <input type="password" id="hubPass" name="hubPass" placeholder="admin123">
+      </div>
+
       <button type="submit" id="submitBtn">Create Project</button>
     </form>
   </div>
@@ -124,6 +139,12 @@ document.getElementById('server').addEventListener('change', function() {
     sshInput.value = servers[this.value] || '';
   }
 });
+
+function toggleHubFields() {
+  const hubFields = document.getElementById('hubFields');
+  const cb = document.getElementById('registerHub');
+  hubFields.style.display = cb.checked ? 'block' : 'none';
+}
 
 document.getElementById('path').addEventListener('input', function() {
   document.getElementById('pathError').style.display = 'none';
@@ -218,6 +239,10 @@ class Handler(BaseHTTPRequestHandler):
             path = params.get("path", [""])[0].strip()
             has_git = params.get("hasGit", [""])[0] == "on"
             has_memory = params.get("hasMemory", [""])[0] == "on"
+            register_hub = params.get("registerHub", [""])[0] == "on"
+            hub_url = params.get("hubUrl", [""])[0].strip()
+            hub_user = params.get("hubUser", [""])[0].strip()
+            hub_pass = params.get("hubPass", [""])[0]
 
             if not name:
                 self._send_error("Project name is required")
@@ -251,6 +276,8 @@ class Handler(BaseHTTPRequestHandler):
 
             try:
                 self._create_project(name, role, server, ssh, path, has_git, has_memory, emit)
+                if register_hub and hub_url and hub_user and hub_pass:
+                    self._register_in_hub(name, role, ssh, path, hub_url, hub_user, hub_pass, emit)
             except Exception as e:
                 emit("error", f"Failed: {e}")
 
@@ -365,6 +392,63 @@ class Handler(BaseHTTPRequestHandler):
             "Memory": "Yes" if has_memory else "No",
         }
         emit("success", "Project created successfully!", summary=summary)
+
+    def _register_in_hub(self, name, role, ssh, path, hub_url, hub_user, hub_pass, emit):
+        emit("info", f"Logging into Project Hub at {hub_url}...")
+
+        class NoRedirect(HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                return None
+
+        opener = build_opener(NoRedirect)
+        login_data = urlencode({"username": hub_user, "password": hub_pass}).encode()
+        login_req = Request(f"{hub_url}/login", data=login_data, method="POST")
+        login_req.add_header("Content-Type", "application/x-www-form-urlencoded")
+
+        try:
+            try:
+                login_resp = opener.open(login_req, timeout=10)
+                cookie_raw = login_resp.headers.get("Set-Cookie", "")
+            except HTTPError as e:
+                cookie_raw = e.headers.get("Set-Cookie", "")
+            if not cookie_raw:
+                emit("error", "Login failed — no session cookie returned")
+                return
+            cookie_value = cookie_raw.split(";")[0]
+        except URLError as e:
+            emit("error", f"Hub login failed: {e.reason}")
+            return
+        except Exception as e:
+            emit("error", f"Hub login failed: {e}")
+            return
+
+        ssh_user = ssh.split("@")[0] if "@" in ssh else ""
+        ssh_host = ssh.split("@")[1] if "@" in ssh else ""
+        project_data = json.dumps({
+            "name": name,
+            "description": role or "",
+            "folder_path": path,
+            "server_host": ssh_host,
+            "ssh_user": ssh_user,
+            "ssh_auth_method": "key",
+            "has_tracker": False,
+        }).encode()
+
+        emit("info", "Creating project in Project Hub...")
+        try:
+            create_req = Request(f"{hub_url}/api/projects", data=project_data, method="POST")
+            create_req.add_header("Content-Type", "application/json")
+            create_req.add_header("Cookie", cookie_value)
+            create_resp = opener.open(create_req, timeout=10)
+            result = json.loads(create_resp.read().decode())
+            if result.get("project"):
+                emit("success", "Project registered in Project Hub")
+            else:
+                emit("warn", f"Hub response: {result.get('error', 'unknown')}")
+        except URLError as e:
+            emit("error", f"Hub registration failed: {e.reason}")
+        except Exception as e:
+            emit("error", f"Hub registration failed: {e}")
 
 
 if __name__ == "__main__":
