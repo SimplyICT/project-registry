@@ -89,6 +89,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": false
+    },
+    {
+      "name": "cool new test project",
+      "role": "full stack react",
+      "server": "server-a",
+      "path": "/home/aiagent/cool-new-test-project",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
