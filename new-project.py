@@ -382,6 +382,32 @@ class Handler(BaseHTTPRequestHandler):
             f.truncate()
         emit("success", "registry.json updated")
 
+        emit("info", "Committing and pushing registry to GitHub...")
+        try:
+            subprocess.run(
+                ["git", "add", "registry.json"],
+                cwd=REGISTRY_DIR, capture_output=True, timeout=30
+            )
+            safe_name = name.replace("'", "'\\''")
+            subprocess.run(
+                ["git", "commit", "-m", f"add {name} to registry"],
+                cwd=REGISTRY_DIR, capture_output=True, timeout=30
+            )
+            push_result = subprocess.run(
+                ["git", "push"],
+                cwd=REGISTRY_DIR, capture_output=True, text=True, timeout=30
+            )
+            if push_result.returncode == 0:
+                emit("success", "Registry pushed to GitHub")
+            else:
+                emit("warn", f"Git push issue: {push_result.stderr[:200]}")
+        except FileNotFoundError:
+            emit("warn", "git not found, skipping commit/push")
+        except subprocess.TimeoutExpired:
+            emit("warn", "Git push timed out, skipping")
+        except Exception as e:
+            emit("warn", f"Git push failed: {e}")
+
         summary = {
             "Name": name,
             "Role": role or "Unknown",
