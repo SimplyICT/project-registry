@@ -143,6 +143,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "Network infrastructure Buildout",
+      "role": "Frontend Backend",
+      "server": "server-a",
+      "path": "/home/aiagent/network-infrastructure-buildout",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
