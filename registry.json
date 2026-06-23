@@ -98,6 +98,33 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "Test Hub Project",
+      "role": "Testing",
+      "server": "server-a",
+      "path": "/tmp/test-hub-project",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
+    },
+    {
+      "name": "Opencode Mission Control",
+      "role": "Infrastructure (Agent Dashboard)",
+      "server": "server-a",
+      "path": "/home/aiagent/opencode-mission-control",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": false,
+      "hasMemory": true
+    },
+    {
+      "name": "Credential system",
+      "role": "Full stack",
+      "server": "server-a",
+      "path": "/home/aiagent/credential-system",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
