@@ -125,6 +125,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "Security Malcolm package",
+      "role": "Full stack",
+      "server": "server-a",
+      "path": "/home/aiagent/security-malcolm-package",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
