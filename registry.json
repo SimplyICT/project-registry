@@ -134,15 +134,6 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
-    },
-    {
-      "name": "Test Wizard Git Push",
-      "role": "Testing",
-      "server": "server-a",
-      "path": "/tmp/test-wizard-git-push",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
     }
   ]
 }
