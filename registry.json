@@ -134,6 +134,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "UTMSTACK test",
+      "role": "Full stack",
+      "server": "server-a",
+      "path": "/home/aiagent/utmstack-test",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
