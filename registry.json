@@ -145,10 +145,21 @@
       "hasMemory": true
     },
     {
-      "name": "Network infrastructure Buildout",
-      "role": "Frontend Backend",
+      "name": "ECCM - Enterprise Cable & Connection Manager",
+      "role": "fullstack",
       "server": "server-a",
       "path": "/home/aiagent/network-infrastructure-buildout",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true,
+      "port": 6173,
+      "description": "Database-backed network patch panel manager with FastAPI + multi-user auth"
+    },
+    {
+      "name": "Paintco Mia Wizard",
+      "role": "Full Stack",
+      "server": "server-a",
+      "path": "/home/aiagent/paintco-mia-wizard",
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
