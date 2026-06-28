@@ -46,6 +46,15 @@
       "hasMemory": true
     },
     {
+      "name": "Ournd Family Site",
+      "role": "Frontend",
+      "server": "server-a",
+      "path": "/home/aiagent/ourndfamily-site",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": false
+    },
+    {
       "name": "Wazuh SOC",
       "role": "Frontend (React SPA)",
       "server": "server-a",
@@ -142,7 +151,7 @@
       "role": "full stack",
       "server": "server-a",
       "path": "/home/aiagent/second-brain",
-      "ssh": "aiagent@208.87.135.84"
+      "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
     }
