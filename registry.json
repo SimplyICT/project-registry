@@ -145,15 +145,6 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
-    },
-    {
-      "name": "Second Brain",
-      "role": "full stack",
-      "server": "server-a",
-      "path": "/home/aiagent/second-brain",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
     }
   ]
 }
