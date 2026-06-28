@@ -55,24 +55,6 @@
       "hasMemory": true
     },
     {
-      "name": "Agency Agents",
-      "role": "Unknown",
-      "server": "server-a",
-      "path": "/home/aiagent/agency-agents",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": false
-    },
-    {
-      "name": "Ournd Family Site",
-      "role": "Frontend",
-      "server": "server-a",
-      "path": "/home/aiagent/ourndfamily-site",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": false
-    },
-    {
       "name": "Wazuh SOC",
       "role": "Frontend (React SPA)",
       "server": "server-a",
@@ -95,15 +77,6 @@
       "role": "full stack react",
       "server": "server-a",
       "path": "/home/aiagent/cool-new-test-project",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "Test Hub Project",
-      "role": "Testing",
-      "server": "server-a",
-      "path": "/tmp/test-hub-project",
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
@@ -170,6 +143,15 @@
       "server": "server-a",
       "path": "/home/aiagent/understand-anything",
       "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
+    },
+    {
+      "name": "test-project",
+      "role": "test",
+      "server": "server-a",
+      "path": "/tmp/test-project-abc123",
+      "ssh": "test@test",
       "hasGit": true,
       "hasMemory": true
     }
