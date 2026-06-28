@@ -37,15 +37,6 @@
       "hasMemory": false
     },
     {
-      "name": "Neodiverse",
-      "role": "Unknown",
-      "server": "server-a",
-      "path": "/home/aiagent/Neodiverse",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": false,
-      "hasMemory": false
-    },
-    {
       "name": "PaintCo",
       "role": "Full Stack (ASP.NET + JS)",
       "server": "server-b",
@@ -147,11 +138,11 @@
       "hasMemory": true
     },
     {
-      "name": "test-project",
-      "role": "test",
+      "name": "Second Brain",
+      "role": "full stack",
       "server": "server-a",
-      "path": "/tmp/test-project-abc123",
-      "ssh": "test@test",
+      "path": "/home/aiagent/second-brain",
+      "ssh": "aiagent@208.87.135.84"
       "hasGit": true,
       "hasMemory": true
     }
