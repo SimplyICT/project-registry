@@ -145,6 +145,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "trading test",
+      "role": "full stack",
+      "server": "server-a",
+      "path": "/home/aiagent/trading-test",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
