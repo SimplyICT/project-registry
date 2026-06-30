@@ -154,6 +154,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "ICT SEO build",
+      "role": "Web app - research, SEO application",
+      "server": "server-a",
+      "path": "/home/aiagent/ict-seo-build",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
