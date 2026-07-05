@@ -1,0 +1,140 @@
+server {
+    listen 80;
+    server_name mc.simplyict.com.au;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name mc.simplyict.com.au;
+
+    ssl_certificate /etc/letsencrypt/live/mc.simplyict.com.au/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mc.simplyict.com.au/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    client_max_body_size 50M;
+
+    # Trailing slash redirects for all path apps
+    location = /hub { return 301 /hub/; }
+    location = /credentials { return 301 /credentials/; }
+    location = /mission { return 301 /mission/; }
+    location = /network { return 301 /network/; }
+    location = /devices { return 301 /devices/; }
+    location = /tracker { return 301 /tracker/; }
+    location = /mc { return 301 /mc/; }
+    location = /wizard { return 301 /wizard/; }
+    location = /api { return 301 /api/; }
+
+    # Landing page (root) and catch-all
+    location / {
+        root /home/aiagent/mission-control-ui;
+        try_files /index.html =404;
+    }
+
+    # Mission Control UI (moved to sub-path)
+    location /mission/ {
+        rewrite ^/mission(/.*) $1 break;
+        proxy_pass http://127.0.0.1:8095;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /mission/;
+        proxy_redirect /mission/ /mission/;
+    }
+
+    # Credential System
+    location /credentials/ {
+        rewrite ^/credentials(/.*) $1 break;
+        proxy_pass http://127.0.0.1:5001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /credentials/;
+        proxy_redirect /credentials/ /credentials/;
+    }
+
+    # Network Infrastructure Buildout
+    location /network/ {
+        rewrite ^/network(/.*) $1 break;
+        proxy_pass http://127.0.0.1:6173;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /network/;
+    }
+
+    # Device Audit API
+    location /devices/ {
+        rewrite ^/devices(/.*) $1 break;
+        proxy_pass http://127.0.0.1:8096;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /devices/;
+    }
+
+    # Mission Control Site tracker
+    location /tracker/ {
+        rewrite ^/tracker(/.*) $1 break;
+        proxy_pass http://127.0.0.1:8097;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /tracker/;
+    }
+
+    # OpenCode Mission Control Dashboard
+    location /mc/ {
+        rewrite ^/mc(/.*) $1 break;
+        proxy_pass http://127.0.0.1:51999;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /mc/;
+    }
+
+    # Project Wizard
+    location /wizard/ {
+        rewrite ^/wizard(/.*) $1 break;
+        proxy_pass http://127.0.0.1:61738;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /wizard/;
+    }
+
+    # Mission Control Site API
+    location /api/ {
+        rewrite ^/api(/.*) $1 break;
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_redirect / /api/;
+    }
+
+}
