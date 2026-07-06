@@ -27,11 +27,9 @@ function Sync-Project($name, $github, $localPath) {
     }
 }
 
-# Main loop
 while ($true) {
     Clear-Host
-    Write-Host "========== Project Switcher ==========" -ForegroundColor Cyan
-    Write-Host ""
+    Write-Host "===== Project Switcher ====="
 
     $registry = Get-Content $RegistryFile -Raw | ConvertFrom-Json
     $projects = $registry.projects
@@ -41,27 +39,21 @@ while ($true) {
         $repo = Split-Path -Leaf $p.path
         $local = Join-Path $LocalBase $repo
         $status = if (Test-Path (Join-Path $local ".git")) { "✓" } else { " " }
-        $role = if ($p.role) { $p.role } else { "" }
-        Write-Host ("{0,2}. [{1}] {2}" -f ($i + 1), $status, $p.name)
-        if ($role) { Write-Host ("     {0}" -f $role) }
+        $role = if ($p.role) { " - $($p.role)" } else { "" }
+        Write-Host ("{0,2}.[{1}] {2}{3}" -f ($i + 1), $status, $p.name, $role)
     }
 
-    Write-Host ""
-    Write-Host "  a. Pull ALL projects" -ForegroundColor Yellow
-    Write-Host "  q. Quit" -ForegroundColor Yellow
-    Write-Host ""
-    $choice = Read-Host "Select project"
+    $choice = Read-Host "#"
 
-    if ($choice -eq 'q') { Write-Host "Bye!"; break }
+    if ($choice -eq 'q') { break }
 
     if ($choice -eq 'a') {
-        Write-Host "Syncing all projects..."
         foreach ($p in $projects) {
             $repo = Split-Path -Leaf $p.path
             $local = Join-Path $LocalBase $repo
             Sync-Project $p.name $p.github $local
         }
-        Read-Host "All done. Press Enter..."
+        Read-Host "done, press enter..."
         continue
     }
 
@@ -73,13 +65,11 @@ while ($true) {
             $repo = Split-Path -Leaf $p.path
             $local = Join-Path $LocalBase $repo
             Sync-Project $p.name $p.github $local
-            Write-Host ""
-            Write-Host "Opening $($p.name)..." -ForegroundColor Green
             Set-Location $local
             cmd /c "start" "cmd" "/K" "cd /d $local"
-            Read-Host "Press Enter to return to switcher..."
+            Read-Host "back, press enter..."
         }
     } else {
-        Read-Host "Invalid choice. Press Enter..."
+        Read-Host "invalid, press enter..."
     }
 }

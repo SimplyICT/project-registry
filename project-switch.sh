@@ -42,32 +42,28 @@ sync_project() {
 
 while true; do
     clear
-    echo "========== Project Switcher =========="
-    echo ""
+    echo "===== Project Switcher ====="
 
     i=0
     while IFS='|' read -r name role github localpath cloned; do
         i=$((i + 1))
         status=" "
         [ "$cloned" = "yes" ] && status="✓"
-        printf "%2d. [%s] %s\n" $i "$status" "$name"
-        [ -n "$role" ] && printf "     %s\n" "$role"
+        role_txt=""
+        [ -n "$role" ] && role_txt=" - $role"
+        printf "%2d.[%s]%s%s\n" $i "$status" "$name" "$role_txt"
     done < "$TEMP_FILE"
 
     echo ""
-    echo "  a. Pull ALL projects"
-    echo "  q. Quit"
-    echo ""
-    read -p "Select project: " choice
+    read -p "# " choice
 
     case "$choice" in
-        q|Q) echo "Bye!"; break ;;
+        q|Q) break ;;
         a|A)
-            echo "Syncing all projects..."
             while IFS='|' read -r name role github localpath cloned; do
                 sync_project "$name" "$github" "$localpath"
             done < "$TEMP_FILE"
-            read -p "All done. Press Enter..."
+            read -p "done, press enter..."
             ;;
         *)
             if [[ "$choice" =~ ^[0-9]+$ ]]; then
@@ -76,16 +72,14 @@ while true; do
                     idx=$((idx + 1))
                     if [ "$idx" -eq "$choice" ]; then
                         sync_project "$name" "$github" "$localpath"
-                        echo ""
-                        echo "Opening $name..."
                         cd "$localpath"
                         $SHELL
-                        read -p "Back to switcher. Press Enter..."
+                        read -p "back, press enter..."
                         break
                     fi
                 done < "$TEMP_FILE"
             else
-                read -p "Invalid choice. Press Enter..."
+                read -p "invalid, press enter..."
             fi
             ;;
     esac
