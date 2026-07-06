@@ -72,10 +72,9 @@ while true; do
                     idx=$((idx + 1))
                     if [ "$idx" -eq "$choice" ]; then
                         sync_project "$name" "$github" "$localpath"
+                        echo "Starting opencode in $name..."
                         cd "$localpath"
-                        $SHELL
-                        read -p "back, press enter..."
-                        break
+                        exec opencode
                     fi
                 done < "$TEMP_FILE"
             else
