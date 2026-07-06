@@ -65,8 +65,9 @@ while ($true) {
             $repo = Split-Path -Leaf $p.path
             $local = Join-Path $LocalBase $repo
             Sync-Project $p.name $p.github $local
+            Write-Host "Starting opencode in $($p.name)..."
             Set-Location $local
-            cmd /c "start" "cmd" "/K" "cd /d $local"
+            opencode
             Read-Host "back, press enter..."
         }
     } else {
