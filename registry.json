@@ -181,6 +181,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "QuickTest",
+      "role": "t",
+      "server": "server-a",
+      "path": "/tmp/qt-1373538",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
