@@ -208,6 +208,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "PushedProject",
+      "role": "test",
+      "server": "server-a",
+      "path": "/tmp/final-1396879",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
