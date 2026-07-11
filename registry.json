@@ -172,6 +172,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "TestFallback",
+      "role": "test",
+      "server": "server-a",
+      "path": "/tmp/test-fb-1369261",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
