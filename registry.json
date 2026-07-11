@@ -199,6 +199,15 @@
       "ssh": "aiagent@208.87.135.193",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "SmokeTest",
+      "role": "t",
+      "server": "server-a",
+      "path": "/tmp/st-1385885",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
