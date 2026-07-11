@@ -226,6 +226,16 @@
       "ssh": "aiagent@208.87.135.193",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "GHTest",
+      "role": "test",
+      "server": "server-a",
+      "path": "/tmp/gh-test-1400475",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": false,
+      "github_repo": "pending"
     }
   ]
 }
