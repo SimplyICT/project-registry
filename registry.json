@@ -217,6 +217,15 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "Simply Clik Website",
+      "role": "Wordpress",
+      "server": "Server-c",
+      "path": "/home/aiagent/simply-clik-website",
+      "ssh": "aiagent@208.87.135.193",
+      "hasGit": true,
+      "hasMemory": true
     }
   ]
 }
