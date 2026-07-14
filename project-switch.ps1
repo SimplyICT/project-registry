@@ -1,76 +1,108 @@
 #!/usr/bin/env pwsh
-# Project Switcher - PowerShell version for Windows
-# Usage: ~/projects/project-registry/project-switch.ps1
 
 $RegistryPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RegistryFile = Join-Path $RegistryPath "registry.json"
-$LocalBase = Join-Path $env:USERPROFILE "projects"
+$Global:Timer = $null
+$Global:CurrentProject = $null
 
-New-Item -ItemType Directory -Force -Path $LocalBase | Out-Null
-
-# Self-update
-Set-Location $RegistryPath
-git pull --ff-only 2>$null
-
-function Sync-Project($name, $github, $localPath) {
-    if (-not $github) {
-        Write-Host "No GitHub URL for $name - skipping" -ForegroundColor Yellow
-        return
-    }
-    if (Test-Path (Join-Path $localPath ".git")) {
-        Write-Host "Pulling $name..." -ForegroundColor Green
-        Set-Location $localPath
-        git pull --ff-only
-    } else {
-        Write-Host "Cloning $name..." -ForegroundColor Green
-        git clone $github $localPath
-    }
+# Verify VS Code CLI is available
+if (-not (Get-Command "code" -ErrorAction SilentlyContinue)) {
+    Write-Host "Error: 'code' command not found (VS Code CLI). Add VS Code to PATH." -ForegroundColor Red
+    exit 1
 }
 
-while ($true) {
-    Clear-Host
-    Write-Host "===== Project Switcher ====="
+function Run-Git-On-Server($project, $gitArgs) {
+    ssh $($project.ssh) "cd $($project.path) && git $gitArgs" 2>$null
+}
 
+function Cleanup {
+    if ($Global:Timer) {
+        $Global:Timer.Stop()
+        $Global:Timer.Dispose()
+    }
+    if ($Global:CurrentProject -and $Global:CurrentProject.hasGit -and $Global:CurrentProject.hasMemory) {
+        Write-Host "Saving memory..." -ForegroundColor Green
+        Run-Git-On-Server $Global:CurrentProject 'add .opencode/memory.md'
+        Run-Git-On-Server $Global:CurrentProject "commit -m 'auto-save memory'"
+        Run-Git-On-Server $Global:CurrentProject 'push'
+        Write-Host "Memory saved." -ForegroundColor Green
+    }
+    & git -C $RegistryPath pull --ff-only 2>$null
+}
+
+function Show-Menu($projects) {
+    Clear-Host
+    Write-Host "===== Project Switcher =====" -ForegroundColor Cyan
+    Write-Host ""
+    for ($i = 0; $i -lt $projects.Count; $i++) {
+        $p = $projects[$i]
+        $gitFlag = if ($p.hasGit) { "git" } else { "--" }
+        $role = if ($p.role) { $p.role } else { "" }
+        Write-Host ("{0,2}. {1,-22} {2,-30} [{3,-9}] {4}" -f ($i+1), $p.name, $role, $p.server, $gitFlag)
+    }
+    Write-Host ""
+    Write-Host "  q. Quit" -ForegroundColor Yellow
+    Write-Host ""
+}
+
+function Open-Project($project) {
+    $Global:CurrentProject = $project
+
+    # Pull registry
+    Write-Host "Pulling latest registry..." -ForegroundColor Cyan
+    & git -C $RegistryPath pull --ff-only 2>$null
+
+    # Pull project repo via SSH
+    if ($project.hasGit) {
+        Write-Host "Pulling latest from $($project.name)..." -ForegroundColor Green
+        Run-Git-On-Server $project 'pull --ff-only'
+    }
+
+    # Start auto-save timer
+    if ($project.hasGit -and $project.hasMemory) {
+        $Global:Timer = New-Object System.Timers.Timer
+        $Global:Timer.Interval = 600000
+        $Global:Timer.AutoReset = $true
+        Register-ObjectEvent -InputObject $Global:Timer -EventName Elapsed -MessageData $project -Action {
+            $proj = $Event.MessageData
+            ssh $($proj.ssh) "cd $($proj.path) && git add .opencode/memory.md && git commit -m 'auto-save memory' && git push" 2>$null
+        } | Out-Null
+        $Global:Timer.Start()
+    }
+
+    # Launch VS Code via SSH Remote
+    $uri = "vscode-remote://ssh-remote+$($project.ssh)$($project.path)"
+    Write-Host "Opening $($project.name) in VS Code..." -ForegroundColor Green
+    $process = Start-Process -FilePath "code" -ArgumentList "--new-window", "--folder-uri", "`"$uri`"" -PassThru -WindowStyle Normal
+    $process.WaitForExit()
+
+    # Cleanup runs on exit
+    Cleanup
+}
+
+# Main
+try {
     $registry = Get-Content $RegistryFile -Raw | ConvertFrom-Json
     $projects = $registry.projects
 
-    for ($i = 0; $i -lt $projects.Count; $i++) {
-        $p = $projects[$i]
-        $repo = Split-Path -Leaf $p.path
-        $local = Join-Path $LocalBase $repo
-        $status = if (Test-Path (Join-Path $local ".git")) { "✓" } else { " " }
-        $role = if ($p.role) { " - $($p.role)" } else { "" }
-        Write-Host ("{0,2}.[{1}] {2}{3}" -f ($i + 1), $status, $p.name, $role)
-    }
+    do {
+        Show-Menu $projects
+        $choice = Read-Host "Select project"
 
-    $choice = Read-Host "#"
+        if ($choice -eq 'q') { break }
 
-    if ($choice -eq 'q') { break }
-
-    if ($choice -eq 'a') {
-        foreach ($p in $projects) {
-            $repo = Split-Path -Leaf $p.path
-            $local = Join-Path $LocalBase $repo
-            Sync-Project $p.name $p.github $local
+        $index = 0
+        if ([int]::TryParse($choice, [ref]$index)) {
+            $index -= 1
         }
-        Read-Host "done, press enter..."
-        continue
-    }
-
-    $index = 0
-    if ([int]::TryParse($choice, [ref]$index)) {
-        $index -= 1
         if ($index -ge 0 -and $index -lt $projects.Count) {
-            $p = $projects[$index]
-            $repo = Split-Path -Leaf $p.path
-            $local = Join-Path $LocalBase $repo
-            Sync-Project $p.name $p.github $local
-            Write-Host "Starting opencode in $($p.name)..."
-            Set-Location $local
-            opencode
-            Read-Host "back, press enter..."
+            Open-Project $projects[$index]
+            break
         }
-    } else {
-        Read-Host "invalid, press enter..."
-    }
+    } while ($true)
+}
+catch {
+    Write-Host "Error: $_" -ForegroundColor Red
+    Cleanup
+    exit 1
 }
