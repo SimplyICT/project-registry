@@ -246,6 +246,15 @@
       "hasGit": true,
       "hasMemory": true,
       "github_repo": "pending"
+    },
+    {
+      "name": "TestProject",
+      "role": "test",
+      "server": "server-c",
+      "path": "/tmp/test-verify-1784123263",
+      "ssh": "aiagent@208.87.135.193",
+      "hasGit": false,
+      "hasMemory": false
     }
   ]
 }
