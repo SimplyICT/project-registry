@@ -236,6 +236,16 @@
       "hasGit": true,
       "hasMemory": false,
       "github_repo": "pending"
+    },
+    {
+      "name": "Tech-Stack",
+      "role": "Full staack",
+      "server": "server-a",
+      "path": "/home/aiagent/tech-stack",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true,
+      "github_repo": "pending"
     }
   ]
 }
