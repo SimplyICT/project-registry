@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import json, os, subprocess, uuid, threading, requests as _requests
+import json, os, subprocess, uuid, threading, traceback
+import requests as _requests
 from datetime import datetime, timezone
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs
@@ -62,8 +63,13 @@ class Handler(BaseHTTPRequestHandler):
         try:
             self._run(name, role, server, ssh, path, has_git, has_memory, has_repo, emit)
         except Exception as e:
-            emit("error", "Failed: " + str(e))
+            tb = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            emit("error", "Failed: " + str(e) + "\n" + tb[:2000])
         emit("info", "Done.")
+        try:
+            self._register_in_super_memory(name, path, role, server, ssh)
+        except Exception:
+            pass
 
     def _err(self, code, msg):
         self.send_response(code)
@@ -95,8 +101,21 @@ class Handler(BaseHTTPRequestHandler):
             if server: f.write("- Server label: `" + server + "`\n")
         emit("info", "Created .opencode/memory.md")
         with open(os.path.join(path, "AGENTS.md"), "w") as f:
-            f.write("# " + name + "\n\n## Project Info\n- Role: " + (role or "TBD") + "\n- Server: " + server + "\n- SSH: " + ssh + "\n- Path: " + path + "\n")
-        emit("info", "Created AGENTS.md")
+            f.write("# " + name + "\n\n## Project Info\n- Role: " + (role or "TBD") + "\n- Server: " + server + "\n- SSH: " + ssh + "\n- Path: " + path + "\n\n## Memory\nThis project has a `memory/` folder for reviewed learnings and a `knowledge/` folder for domain knowledge.\nSee `../super-memory/` for cross-project memory and harness orientation.\n")
+        emit("info", "Created AGENTS.md with Memory section")
+        # ── Infinite Brain OS scaffolding ──
+        emit("info", "Adding memory/ and knowledge/ scaffolding...")
+        os.makedirs(os.path.join(path, "memory"), exist_ok=True)
+        with open(os.path.join(path, "memory", "README.md"), "w") as f:
+            f.write("# Memory\n\nReviewed learnings specific to this project.\nEach file is a memory node with YAML frontmatter.\n\n")
+        os.makedirs(os.path.join(path, "knowledge"), exist_ok=True)
+        with open(os.path.join(path, "knowledge", "README.md"), "w") as f:
+            f.write("# Knowledge\n\nDomain knowledge, architecture decisions, and reference material.\n")
+        os.makedirs(os.path.join(path, "_system"), exist_ok=True)
+        with open(os.path.join(path, "_system", "validate.sh"), "w") as f:
+            f.write("#!/usr/bin/env bash\necho \"project validate - TBD\"\n")
+        os.chmod(os.path.join(path, "_system", "validate.sh"), 0o755)
+        emit("success", "Created memory/, knowledge/, _system/ scaffolding")
         emit("info", "Running npm install (background)...")
         def _npm():
             try:
@@ -190,6 +209,32 @@ class Handler(BaseHTTPRequestHandler):
             "Memory":"Yes" if has_memory else "No",
             "GitHub Repo":"Yes" if has_repo else "No",
         })
+
+    def _register_in_super_memory(self, name, path, role, server, ssh):
+        try:
+            slug = os.path.basename(path)
+            rrd = os.path.expanduser("~/super-memory/repo-registry")
+            if not os.path.isdir(rrd):
+                return
+            ef = os.path.join(rrd, slug + ".md")
+            if os.path.exists(ef):
+                return
+            content = ("# Repo: " + slug + "\n\n" +
+                "- repo: " + slug + "\n- path: ../" + slug + "\n- repo_kind: app\n" +
+                "- primary_job: " + (role or "TBD") + "\n- status: active\n" +
+                "- remote: local-only\n- added: " + datetime.now().strftime("%Y-%m-%d") + "\n" +
+                "\n## Notes\nCreated by project wizard.\nServer: " + server + "\nSSH: " + ssh + "\n")
+            with open(ef, "w") as f:
+                f.write(content)
+            try:
+                for cmd in [["git","add","repo-registry/"+slug+".md"],
+                            ["git","commit","-m","Register "+slug+" in repo-registry"]]:
+                    subprocess.run(cmd, cwd=os.path.expanduser("~/super-memory"),
+                                 capture_output=True, timeout=30)
+            except Exception:
+                pass
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     srv = HTTPServer(("0.0.0.0", PORT), Handler)
