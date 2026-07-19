@@ -191,6 +191,16 @@
       "hasGit": true,
       "hasMemory": true,
       "github_repo": "pending"
+    },
+    {
+      "name": "test-repo-creation",
+      "role": "testing",
+      "server": "server-a",
+      "path": "/tmp/test-repo-wizard",
+      "ssh": "aiagent@localhost",
+      "hasGit": true,
+      "hasMemory": true,
+      "github_repo": "pending"
     }
   ]
 }
