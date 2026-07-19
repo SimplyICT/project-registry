@@ -181,6 +181,16 @@
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
+    },
+    {
+      "name": "server monitor 2",
+      "role": "webapp",
+      "server": "server-a",
+      "path": "/home/aiagent/server-monitor-2",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true,
+      "github_repo": "pending"
     }
   ]
 }
