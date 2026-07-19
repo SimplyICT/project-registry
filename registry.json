@@ -165,96 +165,13 @@
       "hasMemory": true
     },
     {
-      "name": "WizardOK",
-      "role": "test",
+      "name": "servere monitor",
+      "role": "webapp",
       "server": "server-a",
-      "path": "/tmp/wiz-ok-1362119",
+      "path": "/home/aiagent/servere-monitor",
       "ssh": "aiagent@208.87.135.84",
       "hasGit": true,
       "hasMemory": true
-    },
-    {
-      "name": "TestFallback",
-      "role": "test",
-      "server": "server-a",
-      "path": "/tmp/test-fb-1369261",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "QuickTest",
-      "role": "t",
-      "server": "server-a",
-      "path": "/tmp/qt-1373538",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "SimplyClik Website",
-      "role": "Wordpress",
-      "server": "custom",
-      "path": "/home/aiagent/projects/cliksite",
-      "ssh": "aiagent@208.87.135.193",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "SmokeTest",
-      "role": "t",
-      "server": "server-a",
-      "path": "/tmp/st-1385885",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "PushedProject",
-      "role": "test",
-      "server": "server-a",
-      "path": "/tmp/final-1396879",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "Simply Clik Website",
-      "role": "Wordpress",
-      "server": "Server-c",
-      "path": "/home/aiagent/simply-clik-website",
-      "ssh": "aiagent@208.87.135.193",
-      "hasGit": true,
-      "hasMemory": true
-    },
-    {
-      "name": "GHTest",
-      "role": "test",
-      "server": "server-a",
-      "path": "/tmp/gh-test-1400475",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": false,
-      "github_repo": "pending"
-    },
-    {
-      "name": "Tech-Stack",
-      "role": "Full staack",
-      "server": "server-a",
-      "path": "/home/aiagent/tech-stack",
-      "ssh": "aiagent@208.87.135.84",
-      "hasGit": true,
-      "hasMemory": true,
-      "github_repo": "pending"
-    },
-    {
-      "name": "TestProject",
-      "role": "test",
-      "server": "server-c",
-      "path": "/tmp/test-verify-1784123263",
-      "ssh": "aiagent@208.87.135.193",
-      "hasGit": false,
-      "hasMemory": false
     }
   ]
 }
