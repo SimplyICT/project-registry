@@ -201,6 +201,16 @@
       "hasGit": true,
       "hasMemory": true,
       "github_repo": "pending"
+    },
+    {
+      "name": "server monitor 5",
+      "role": "webapp",
+      "server": "server-a",
+      "path": "/home/aiagent/server-monitor-5",
+      "ssh": "aiagent@208.87.135.84",
+      "hasGit": true,
+      "hasMemory": true,
+      "github_repo": "pending"
     }
   ]
 }
