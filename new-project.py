@@ -101,7 +101,7 @@ class Handler(BaseHTTPRequestHandler):
             if server: f.write("- Server label: `" + server + "`\n")
         emit("info", "Created .opencode/memory.md")
         with open(os.path.join(path, "AGENTS.md"), "w") as f:
-            f.write("# " + name + "\n\n## Project Info\n- Role: " + (role or "TBD") + "\n- Server: " + server + "\n- SSH: " + ssh + "\n- Path: " + path + "\n\n## Memory\nThis project has a `memory/` folder for reviewed learnings and a `knowledge/` folder for domain knowledge.\nSee `../super-memory/` for cross-project memory and harness orientation.\n")
+            f.write("# " + name + "\n\n## Project Info\n- Role: " + (role or "TBD") + "\n- Server: " + server + "\n- SSH: " + ssh + "\n- Path: " + path + "\n\n## Memory\nThis project has a `memory/` folder for reviewed learnings and a `knowledge/` folder for domain knowledge.\nSee `../super-memory/` for cross-project memory and harness orientation.\n\n## OB1 Memory\nThis project has OB1 (Open Brain) memory available via the `ob1-memory` MCP server.\nUse `project=" + name.lower().replace(" ", "-") + "` when capturing memories.\n")
         emit("info", "Created AGENTS.md with Memory section")
         # ── Infinite Brain OS scaffolding ──
         emit("info", "Adding memory/ and knowledge/ scaffolding...")
